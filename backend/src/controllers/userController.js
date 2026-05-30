@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs")
-const prisma = require("../libs/primsa.js")
+const prisma = require("../lib/prisma.js")
+
+const sign = require("../lib/helpers.js").signJwt
 
 async function registerUser(req, res, next) {
   const { username, password } = req.body; 
@@ -47,14 +49,17 @@ async function loginUser(req, res, next) {
       throw new Error("User does not exist")
     }
 
-    const verified = await bcrypt.compare(password, user.passwordHash);
+    const verified = await bcrypt.compare(password, user.userHash);
+
 
     if (verified) {
-      return res.json({success: true, message: "User logged in successfuly"}, user);
+      const token = await sign(user.userId)
+      return res.json({success: true, message: "User logged in successfuly", token});
     } else {
       throw new Error("Incorrect password");
     }
   } catch (e) {
+    console.log(e)
     return res.json({success: false, message: e})
   }
 }
