@@ -1,7 +1,7 @@
 require("dotenv").config()
 const jwt = require("jsonwebtoken")
 
-async function signJwt(userId) {
+function signJwt(userId) {
     const payload = {
         userId
     }

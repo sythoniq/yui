@@ -53,7 +53,7 @@ async function loginUser(req, res, next) {
 
 
     if (verified) {
-      const token = await sign(user.userId)
+      const token = sign(user.userId)
       return res.json({success: true, message: "User logged in successfuly", token});
     } else {
       throw new Error("Incorrect password");
