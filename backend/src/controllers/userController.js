@@ -34,7 +34,29 @@ async function registerUser(req, res, next) {
 }
 
 async function loginUser(req, res, next) {
+  const { username, password } = req.body;
 
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        userName: username
+      }
+    })
+
+    if (!user) {
+      throw new Error("User does not exist")
+    }
+
+    const verified = await bcrypt.compare(password, user.passwordHash);
+
+    if (verified) {
+      return res.json({success: true, message: "User logged in successfuly"}, user);
+    } else {
+      throw new Error("Incorrect password");
+    }
+  } catch (e) {
+    return res.json({success: false, message: e})
+  }
 }
 
 async function authUser(req, res, next) {
