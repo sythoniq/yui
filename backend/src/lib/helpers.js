@@ -3,12 +3,13 @@ const jwt = require("jsonwebtoken")
 
 function signJwt(userId) {
     const payload = {
-        userId
+        sub: userId,
+        iat: Date.now()
     }
 
     const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "7d"});
 
-    return token;
+    return "Bearer " + token;
 }
 
 module.exports = {
