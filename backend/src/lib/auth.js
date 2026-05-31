@@ -21,6 +21,7 @@ async function authorizeUser(req, res, next) {
             })
 
             if (user) {
+                req.user = { userId: user.userId, userName: user.userName};
                 next()
             } else {
                 throw new Error("User not authorized")

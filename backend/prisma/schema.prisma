@@ -24,7 +24,7 @@ model User {
 model Message {
   messageId      Int      @id @default(autoincrement())
   messageContent String
-  messageDate    DateTime
+  messageDate    DateTime  @default(now())
 
   messageSender User @relation("SentMessages", fields: [senderId], references: [userId])
   senderId      Int
