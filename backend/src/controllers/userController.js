@@ -37,7 +37,6 @@ async function registerUser(req, res, next) {
 
 async function loginUser(req, res, next) {
   const { username, password } = req.body;
-  console.log(req);
 
   try {
     const user = await prisma.user.findUnique({
@@ -60,7 +59,6 @@ async function loginUser(req, res, next) {
       throw new Error("Incorrect password");
     }
   } catch (e) {
-    console.log(e)
     return res.json({success: false, message: e})
   }
 }

@@ -1,4 +1,5 @@
 require("dotenv").config()
+const passport = require("passport")
 const jwt = require("jsonwebtoken")
 
 function signJwt(userId) {

@@ -1,31 +1,37 @@
 require("dotenv").config()
+
 const prisma = require("./prisma.js")
+const jwt = require('jsonwebtoken')
 
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-const JwtStrategy = require("passport-jwt").Strategy;
+async function authorizeUser(req, res, next) {
+    const fullToken = req['headers'].authorization;
+    if (!fullToken) {
+        return next()
+    }
 
+    const token = fullToken.split(" ")[1]
+    try {
+        const result = jwt.verify(token, process.env.SECRET);
+        if (result) {
+            const user = await prisma.user.findUnique({
+                where: {
+                    userId: result.sub
+                }
+            })
 
-const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.SECRET
+            if (user) {
+                next()
+            } else {
+                throw new Error("User not authorized")
+            }
+        } else {
+            throw new Error("Authorization failed")
+        }
+    } catch(e) {
+        return res.json({success: false, error: e});
+    }
 }
 
-module.exports = (passport) => {
-    passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
-        const user = await prisma.user.findUnique({
-            where: {
-                userId: jwt_payload.sub
-            }
-        })
-
-        if (!user) {
-            return done("User not found", false)
-        }
-
-        if (user) {
-            return done(null, user)
-        } else {
-            return done(null, false)
-        }
-    }))
+module.exports = {
+    authorizeUser,
 }
