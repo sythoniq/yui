@@ -5,7 +5,7 @@ export default function App() {
         <h2>結Yui</h2>
       </header>
       <main className="main-container">
-        
+
       </main>
     </>
   )
