@@ -19,11 +19,24 @@ async function sendChat(req, res, next) {
     }
     return res.json({success: true, message})
   } catch (e) {
-    console.log(e)
     return res.json({success: false, error: e})
   }
 }
 
+async function getAllUsers(req, res, next) {
+  try {
+    const users = await prisma.user.findMany({});
+    if (!users) {
+      throw new Error("Database error attempting to get users!")
+    } 
+
+    return res.json({success: true, users})
+  } catch (e){
+    return res.json({success: false, e});
+  }
+}
+
 module.exports = {
-  sendChat
+  sendChat,
+  getAllUsers
 }
