@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+const jwt = require("jsonwebtoken")
 
 function authUser(req, res, next) {
 				if (!req.headers["authorization"]) return "No auth header"
