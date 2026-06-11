@@ -1,19 +1,24 @@
-import { useLoaderData } from 'react-router'
+import { Outlet, Link, useLoaderData } from 'react-router'
+import Header from "./components/Header.jsx"
+import User from "./components/User.jsx"
 
 export default function App() {
   const users = useLoaderData();
 
   return (
     <>
-      <header className="page-heading">
-        <h2>結Yui</h2>
-      </header>
+      <Header />
       <main className="main-container">
-        {users && users.map((user) => {
-          return (
-            <p key={user.userId}>User: {user.userName}</p>
-          )
-        })}
+        <div className="users-list">
+          {users && users.map((user) => {
+            return (
+              <User key={user.userId} userName={user.userName} userId={user.userId} />
+            )
+          })}
+        </div>
+        <div className="chats-main-content">
+          <Outlet />
+        </div>
       </main>
     </>
   )

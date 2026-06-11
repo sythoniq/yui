@@ -27,6 +27,10 @@ const routes = [
     loader: getAllUsers,
     hydrateFallbackElement: <Fallback />,
     children: [
+      {
+        path: "/chat/:userId",
+        element: <ChatPage />
+      }
     ]
   }
 ]
