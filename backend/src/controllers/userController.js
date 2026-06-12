@@ -3,6 +3,20 @@ const prisma = require("../configs/prisma.js")
 
 const jwtSign = require("../configs/helpers.js").signJwt;
 
+async function getAllUsers(req, res, next) {
+				try {
+								const users = await prisma.user.findMany({});
+
+								if (!users) {
+												throw new Error("Failed to fetch users!")
+								}
+
+								return res.json({success: true, users});
+				} catch (e) {
+								next(e)
+				}
+}
+
 async function getUser(req, res, next) {
 				const userId = Number(req.params.userId);
 
@@ -79,6 +93,7 @@ async function updateUserProfile(req, res, next) {
 
 module.exports = {
 				getUser,
+				getAllUsers,
 				registerUser,
 				loginUser,
 				updateUserProfile
