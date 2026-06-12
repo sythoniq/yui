@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 async function authUser(req, res, next) {
 				if (!req.headers["authorization"]) next()
 
-				const token = req.headers["authorization"].split(" ")[1];
+				const token = req.headers["authorization"].split(" ")[1]; // Split from bearer
 				const result = jwt.verify(token, process.env.SECRET);
 
 				try {
@@ -21,8 +21,6 @@ async function authUser(req, res, next) {
 				} catch(e) {
 								next(e);
 				}
-
-				//TODO: Once i confirm what jwt verify returns then implement the authUser function fully.
 }
 
 function signJwt(userId) {
