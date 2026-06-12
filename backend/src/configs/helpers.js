@@ -1,12 +1,26 @@
+const prisma = require("./prisma.js")
 const jwt = require("jsonwebtoken")
 
-function authUser(req, res, next) {
-				if (!req.headers["authorization"]) return "No auth header"
-				if (!req.headers["authorization"].token) return "Auth token not provided"
+async function authUser(req, res, next) {
+				if (!req.headers["authorization"]) next()
 
-				const token = req.headers["authorization"].token;
+				const token = req.headers["authorization"].split(" ")[1];
 				const result = jwt.verify(token, process.env.SECRET);
-				console.log(result);
+
+				try {
+								const user = await prisma.user.findUnique({
+												where: {
+																userId: result.sub
+												}
+								})
+
+								if (!user) {
+												throw new Error("User not found!")
+								}
+								next()
+				} catch(e) {
+								next(e);
+				}
 
 				//TODO: Once i confirm what jwt verify returns then implement the authUser function fully.
 }
