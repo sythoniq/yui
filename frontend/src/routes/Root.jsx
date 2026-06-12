@@ -28,11 +28,18 @@ async function loadChat({params}) {
 				}
 }
 
+function Loading() {
+				return (
+								<h2>Loading...</h2>
+				)
+}
+
 const routes = [
 				{
 								path: "/",
 								element: <App />,
 								loader: getAllUsers,
+								hydrateFallbackElement: <Loading />,
 								children: [
 												{
 																path: "/user/:userId/profile",

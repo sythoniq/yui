@@ -28,7 +28,7 @@ export default function Login() {
 																throw new Error("Error sending login request!")
 												}
 
-												localStorage.setItem("jwt-token", data.token)
+												localStorage.setItem("jwt-token", "Bearer " + data.token)
 												navigate("/");
 								} catch(e) {
 												console.error(e)
