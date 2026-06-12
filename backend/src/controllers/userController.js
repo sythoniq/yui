@@ -4,7 +4,26 @@ const prisma = require("../configs/prisma.js")
 const jwtSign = require("../configs/helpers.js").signJwt;
 
 async function getUser(req, res, next) {
-				//TODO: A function to get a user, could be useful to catch if a user exists and what not.
+				const userId = Number(req.params.userId);
+
+				if (!userId) {
+								throw new Error("User Id not provided!")
+				}
+
+				try {
+								const user = await prisma.user.findUnique({
+												where: {
+																userId
+												}
+								})
+
+								if (!user) {
+												throw new Error("User not found!")
+								}
+								return res.json({success: true, user: {"id": user.userId, "name": user.userName}})
+				} catch(e) {
+								next(e);
+				}
 }
 
 async function registerUser(req, res, next) {
@@ -53,17 +72,14 @@ async function loginUser(req, res, next) {
 				}
 }
 
-async function getUserProfile(req, res, next) {
-				// TODO: Have user profile image included via a url that is gonna be fetched from supabase or just have a generic user icon thingy... ig
-}
-
 async function updateUserProfile(req, res, next) {
 				//TODO: Allow username and password changes...
+				//This has to wait until i decided on how to add user image profiles and how i will implement the changing of that stuff, prolly gonna use supabase tbf
 }
 
 module.exports = {
+				getUser,
 				registerUser,
 				loginUser,
-				getUserProfile,
 				updateUserProfile
 }

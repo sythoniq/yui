@@ -3,7 +3,7 @@ const user = Router()
 
 const controller = require("../controllers/userController.js")
 
-user.get("/:userId/profile", controller.getUserProfile);
+user.get("/:userId/profile", controller.getUser);
 
 user.post("/register", controller.registerUser)
 user.post("/login", controller.loginUser);
