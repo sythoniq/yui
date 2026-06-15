@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'; import { useLoaderData } from 'react-router'
+import { useState, useEffect } from 'react'; import { Outlet, useLoaderData } from 'react-router'
 
 import UserCard from "./components/UserCard.jsx";
 import Header from "./components/Header.jsx";
@@ -6,6 +6,7 @@ import Header from "./components/Header.jsx";
 export default function App() {
   const API = import.meta.env.VITE_BASE_API
   const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
   const users = useLoaderData()
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function App() {
           throw new Error("Failed to verify the user!")
         }
         setLoggedIn(true);
+        setUser(data.user);
       } catch (e) {
         console.error(e)
       }
@@ -44,7 +46,7 @@ export default function App() {
 
   return (
     <main className="application-entry-point">
-      <Header loggedIn={loggedIn} />
+      <Header loggedIn={loggedIn} user={user} />
       <div className="users-list">
         {users && users.map((user) => {
           return (
@@ -52,6 +54,7 @@ export default function App() {
           )
         })}
       </div>
+      <Outlet />
     </main>
   )
 }

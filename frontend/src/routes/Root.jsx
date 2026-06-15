@@ -1,5 +1,5 @@
 import App from "../App.jsx"
-import Login from "../components/Login.jsx"; import Register from "../components/Register.jsx"; import ChatPage from '../components/ChatPage.jsx'
+import Login from "../components/Login.jsx"; import Register from "../components/Register.jsx"; import ChatPage from '../components/ChatPage.jsx'; import UserProfile from "../components/UserProfile.jsx";
 
 const API = import.meta.env.VITE_BASE_API
 
@@ -43,6 +43,7 @@ const routes = [
 								children: [
 												{
 																path: "/user/:userId/profile",
+																element: <UserProfile />
 												},
 												{
 																path: "/chat/:userId",
