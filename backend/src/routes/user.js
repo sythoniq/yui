@@ -8,7 +8,7 @@ user.get("/", controller.getAllUsers);
 user.get("/:userId/profile", controller.getUser);
 
 user.get("/auth", auth, (req, res, next) => {
-				res.json({success: true, message: "User verified!"})
+				res.json({success: true, message: "User verified!", user: req.user})
 })
 
 user.post("/register", controller.registerUser)
