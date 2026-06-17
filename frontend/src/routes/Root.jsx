@@ -22,7 +22,20 @@ async function loadChat({params}) {
 				const userId = params.userId;
 
 				try {
-								
+								const res = await fetch(API + `/chat/${userId}`, {
+												headers: {
+																"Content-Type": "application/json",
+																"Authorization": localStorage.getItem("jwt-token")
+												}
+								});
+								const data = await res.json()
+
+								if (!data.success) {
+												throw new Error("Error while fetching chat")
+								}
+
+								console.log(data.messages);
+								return data.messages;
 				} catch(e) {
 								console.error(e);
 				}
