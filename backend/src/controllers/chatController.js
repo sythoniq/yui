@@ -2,10 +2,14 @@ const prisma = require("../configs/prisma.js")
 
 async function getChat(req, res, next) {
 				try {
-								const currentUser = req.user;
+								const targetUserId = Number(req.params.userId);
+								const currentUserId = Number(req.user.userId);
 								const messages = await prisma.user.findUnique({
 												where: {
-																userId: currentUser.userId
+																OR: [
+																				{ senderId: currentUserId, receiverId: targetUserId },
+																				{ senderId: targetUserId, receiverId: currentUserId }
+																]
 												},
 												include: {
 																sentMessages: true,
