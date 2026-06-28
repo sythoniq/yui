@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Message" ADD COLUMN     "message_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

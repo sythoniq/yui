@@ -10,14 +10,14 @@ async function authUser(req, res, next) {
 				try {
 								const user = await prisma.user.findUnique({
 												where: {
-																userId: result.sub
+																user_id: result.sub
 												}
 								})
 
 								if (!user) {
 												throw new Error("User not found!")
 								}
-								req.user = { userName: user.userName, userId: user.userId};
+								req.user = { userName: user.user_name, userId: user.user_id};
 								next();
 				} catch(e) {
 								next(e);

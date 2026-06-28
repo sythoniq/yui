@@ -27,14 +27,14 @@ async function getUser(req, res, next) {
 				try {
 								const user = await prisma.user.findUnique({
 												where: {
-																userId
+																user_id: userId
 												}
 								})
 
 								if (!user) {
 												throw new Error("User not found!")
 								}
-								return res.json({success: true, user: {"id": user.userId, "name": user.userName}})
+								return res.json({success: true, user: {"id": user.user_id, "name": user.userName}})
 				} catch(e) {
 								next(e);
 				}
@@ -47,8 +47,8 @@ async function registerUser(req, res, next) {
 				try {
 								const user = await prisma.user.create({
 												data: {
-																userName: username,
-																userHash: hashedPassword
+																user_name: username,
+																user_hash: hashedPassword
 												}
 								})
 								
@@ -66,7 +66,7 @@ async function loginUser(req, res, next) {
 				try {
 								const user = await prisma.user.findUnique({
 												where: {
-																userName: username
+																user_name: username
 												}
 								})
 
@@ -74,11 +74,11 @@ async function loginUser(req, res, next) {
 												throw new Error("User not found, check username!")
 								}
 
-								const result = await bcrypt.compare(password, user.userHash);
+								const result = await bcrypt.compare(password, user.user_hash);
 								if (!result) {
 								    throw new Error("User verification failed, incorrect password!")
 								} 
-								const token = jwtSign(user.userId)	
+								const token = jwtSign(user.user_id)	
 								if (!token)  throw new Error("Error generating jwt token, try again later!")
 								return res.json({success: true, token})
 				} catch(e) {
