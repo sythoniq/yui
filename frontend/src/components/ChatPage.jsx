@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { useLoaderData, useParams } from 'react-router';
+import { useLoaderData, useParams, useNavigate } from 'react-router';
 
 export default function ChatPage() {
 				const API = import.meta.env.VITE_BASE_API
+				const navigate = useNavigate()
 				const messages = useLoaderData()
 
 				const receiverId = useParams().userId;
 				const [message, setMessage] = useState()
-
-				const sent = messages.sent;
-				const received = messages.received;
 
 				async function handleMessage(e) {
 								e.preventDefault()
@@ -25,7 +23,10 @@ export default function ChatPage() {
 												})
 												const data = await res.json()
 
-												console.log(data);
+												if (data.success) {
+																navigate(0)
+												}
+												throw new Error("Error sending message...")
 								} catch(e) {
 												console.error(e);
 								}
@@ -34,22 +35,6 @@ export default function ChatPage() {
 				return (
 								<main className="chat-page">
 												<div className="chat-page-body">
-																{sent.map((msg) => {
-																				return (
-																								<div className="sent-messages" key={msg.messageId}>
-																												<p>{msg.messageContent}</p>
-																												<p>Sent</p>
-																								</div>
-																				)
-																})}
-																{received.map((msg) => {
-																				return (
-																								<div className="received-messages" key={msg.messageId}>
-																												<p>{msg.messageContent}</p>
-																												<p>Received</p>
-																								</div>
-																				)
-																})}
 												</div>
 												<form className="chat-space">
 																<label htmlFor="messageContent"></label>

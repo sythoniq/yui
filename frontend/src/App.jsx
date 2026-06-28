@@ -48,9 +48,9 @@ export default function App() {
     <main className="application-entry-point">
       <Header loggedIn={loggedIn} user={user} />
       <div className="users-list">
-        {users && users.map((user) => {
+        {users && users.map((usr) => {
           return (
-            <UserCard key={user.userId} userId={user.userId} userName={user.userName} />
+            <UserCard key={usr.user_id} userId={usr.user_id} userName={usr.user_name} />
           )
         })}
       </div>
