@@ -62,11 +62,20 @@ async function loginUser(req, res) {
 
 async function getUsers(req, res) {
 				try {
-								const users = await prisma.user.findMany({});
+								let users = await prisma.user.findMany({
+												omit: {
+																user_hash: true
+												}
+								});
+
+								if (req.user) {
+												users = users.filter((usr) => usr.user_id != req.user.userid)
+								}
 
 								return res.json({success: true, users});
 				} catch (e) {
-								return res.status(404).json({success: false,});
+								console.error(e)
+								return res.status(404).json({success: false, message: "Unexpected Error"});
 				}
 }
 
