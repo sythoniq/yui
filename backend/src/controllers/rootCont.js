@@ -79,9 +79,33 @@ async function getUsers(req, res) {
 				}
 }
 
+async function authUser(req, res) {
+				const authHeader = req.headers["authorization"]
+				if (!authHeader) {
+								return res.json({success: false, message: "Failed to auth"})
+				}
+				const token = authHeader.split(" ")[1]
+
+				const result = jwt.verify(token, process.env.JWT_SECRET);
+				if (result) {
+								const user = await prisma.user.findUnique({
+												where: {
+																user_id: Number(result.userid)
+												},
+												omit: {
+																user_hash: true
+												}
+								})
+
+								return res.json({success: true, message: "Authed", user})
+				}
+				return res.json({success: false, message: "Unauthed"})
+}
+
 
 module.exports = {
 				registerUser,
 				loginUser,
-				getUsers
+				getUsers,
+				authUser
 }
