@@ -1,0 +1,14 @@
+.page-heading {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 1em;
+				font-size: 1.2em;
+				background-color: rgba(100, 100, 100, 0.6);
+				border-bottom: 1px solid white;
+}
+
+.page-heading > a, .page-nav > a {
+				text-decoration: none;
+				color: white;
+}

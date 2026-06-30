@@ -1,6 +1,6 @@
 import "./Register.css"
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, Link } from 'react-router'
 
 export default function Register() {
 				const API = import.meta.env.VITE_BASE_API
@@ -33,14 +33,20 @@ export default function Register() {
 
 				return (
 								<section className="register-section">
+												<h2>Create an account</h2>
 												<form className="register-form">
-																<label htmlFor="username"></label>
-																<input type="text" name="username" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-																<label htmlFor="password"></label>
-																<input type="password" name="password" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+																<div>
+																				<label htmlFor="username">Username</label>
+																				<input type="text" name="username" id="username" onChange={(e) => setUsername(e.target.value)} />
+																</div>
+																<div>
+																				<label htmlFor="password">Password</label>
+																				<input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} />
+																</div>
 
 																<button onClick={handleRegister}>Sign Up</button>
 												</form>
+												<p>Already have an account? <Link to="/login">Login</Link></p>
 								</section>
 				)
 
