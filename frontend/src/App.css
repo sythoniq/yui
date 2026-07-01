@@ -6,3 +6,9 @@
 body {
 				background-color: rgba(0, 0, 0, 0.8);
 }
+
+.page-body {
+				display: grid;
+				grid-template: 1fr / .15fr .75fr;
+				height: 100vh;
+}

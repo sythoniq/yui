@@ -33,9 +33,8 @@ export default function Chat() {
 								}
 				}, [])
 
-				console.log(sentMessages, receivedMessages);
-
 				return (
-												<p>Hi</p>
+								<main className="chat-body">
+								</main>
 				)
 }

@@ -14,6 +14,7 @@ export default function Header() {
 												if (!token) {
 																setLoggedIn(false)
 																setUser(null)
+																return;
 												}
 												const res = await fetch(`${API}/auth`, {
 																method: "GET",

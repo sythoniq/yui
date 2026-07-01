@@ -9,8 +9,10 @@ export default function App() {
   return (
     <>
       <Header />
-      <Users />
-      <Outlet />
+      <main className="page-body">
+        <Users />
+        <Outlet />
+      </main>
     </>
   )
 }
