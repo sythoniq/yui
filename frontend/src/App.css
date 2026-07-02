@@ -9,6 +9,6 @@ body {
 
 .page-body {
 				display: grid;
-				grid-template: 1fr / .15fr .75fr;
+				grid-template: 1fr / .15fr .85fr;
 				height: 100vh;
 }
