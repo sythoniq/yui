@@ -9,7 +9,13 @@ export default function Users() {
 
 				useEffect(() => {
 								async function getUsers() {
-												const res = await fetch(`${API}/`);
+
+												const res = await fetch(`${API}/`, {
+																headers: {
+																				"Content-Type": "application/json",
+																				"Authorization": localStorage.getItem("jwt-token") || null
+																}
+												});
 												const data = await res.json()
 
 												if (!data) {
@@ -29,7 +35,7 @@ export default function Users() {
 								)
 				}
 
-				const listUsers = users.map(user => 
+				const listUsers = users.map(user => 	
 								<div key={user.user_id} className="user-card">
 												<Link to={`/chat/${user.user_id}`}>
 																<h2>{user.user_name}</h2>
