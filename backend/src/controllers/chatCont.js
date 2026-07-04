@@ -23,18 +23,23 @@ async function getChat(req, res) {
 												orderBy: {
 																message_date: "asc"
 												},
+												include: {
+																sender: {
+																				omit: {
+																								user_hash: true
+																				}
+																},
+																receiver: {
+																				omit: {
+																								user_hash: true
+																				}	
+																}
+												},
 								})
-
-								// What a janky way to filter messages, feels like there would be a better way to do this tbh... but idk how atm
-								const sentMessages = messages.filter((msg) => msg.sender_id == currentUserId);
-								const receivedMessages = messages.filter((msg) => msg.receiver_id == currentUserId);
 
 								return res.json({
 												success: true,
-												messages: {
-																sentMessages,
-																receivedMessages
-												}
+												messages
 								})
 				} catch(e) {
 								console.error(e)
