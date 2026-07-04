@@ -1,10 +1,10 @@
+import Card from './Card.jsx'
+
 import "./Chat.css"
 
-import { useState, useEffect } from 'react'
-import { useParams, useLoaderData } from 'react-router'
+import { useLoaderData } from 'react-router'
 
 export default function Chat() {
-				const { userId } = useParams()
 				const messages = useLoaderData()
 
 				if (messages == undefined) {
@@ -13,9 +13,14 @@ export default function Chat() {
 								)
 				}
 
+
 				return (
 								<main className="chat-body">
-
+												{messages.map((msg) => {
+																return (
+																				<Card message={msg} key={msg.message_id} />
+																)
+												})}
 								</main>
 				)
 }

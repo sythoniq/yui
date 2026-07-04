@@ -1,1 +1,21 @@
+.chat-body {
+				display: flex;
+				flex-direction: column;
+				gap: .8em;
+}
 
+.message-card {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 1.2em;
+				width: fit-content;
+				background-color: rgba(0, 0, 0, 0.4);
+				color: white;
+				padding: .6em;
+				border-radius: 12px;
+}
+
+.message-body {
+				font-size: 1.2em;
+}
