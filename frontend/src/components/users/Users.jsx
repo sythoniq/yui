@@ -9,19 +9,22 @@ export default function Users() {
 
 				useEffect(() => {
 								async function getUsers() {
+												const token = localStorage.getItem("jwt-token");
 
 												const res = await fetch(`${API}/`, {
 																headers: {
 																				"Content-Type": "application/json",
-																				"Authorization": localStorage.getItem("jwt-token") || null
+																				"Authorization": token
 																}
 												});
 												const data = await res.json()
 
 												if (!data) {
 																console.error("Error fetching users")
+																return;
 												}
 												setUsers(data.users)
+												return;
 								}
 
 								return () => {

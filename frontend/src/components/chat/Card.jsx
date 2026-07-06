@@ -1,3 +1,5 @@
+// TODO: Make sure that each message card has an indication of the senders username...
+
 export default function Card({message, type}) {
 
 				return (

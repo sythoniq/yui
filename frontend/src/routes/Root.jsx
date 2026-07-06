@@ -19,8 +19,9 @@ async function getMessages({params}) {
 				}
 
 				const messages = data.messages;
+				const recipient = data.recipient;
 
-				return messages;
+				return { messages, recipient }
 }
 
 

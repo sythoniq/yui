@@ -1,7 +1,54 @@
 .chat-body {
 				display: flex;
 				flex-direction: column;
+}
+
+.chat-header {
+				text-transform: capitalize;
+				background-color: rgba(0, 0, 0, 0.2);
+				color: white;
+				padding: .6em;
+}
+
+.messages {
+				display: flex;
+				flex-direction: column;
 				gap: .8em;
+				padding: 1.2em;
+				height: 90%;
+}
+
+.send-message {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: .4em;
+}
+
+.send-message > input {
+				font-size: 1.5em;
+				padding: .3em .6em;
+				border-radius: 10px;
+				width: 80%;
+				background: transparent;
+				color: white;
+				border: none;
+				box-shadow: 5px 5px 25px 2px rgba(0, 0, 0, 0.5);
+}
+
+.send-message > input:focus {
+				outline: none;
+}
+
+.send-message > button {
+				font-size: 1.5em;
+				padding: .4em;
+				border-radius: 10px;
+				background: transparent;
+				border: none;
+				box-shadow: 5px 5px 25px 2px rgba(0, 0, 0, 0.5);
+				color: white;
 }
 
 .message-card {
@@ -18,4 +65,12 @@
 
 .message-body {
 				font-size: 1.2em;
+}
+
+.sent {
+				align-self: end;
+}
+
+.received {
+				align-self: start;
 }
