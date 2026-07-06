@@ -1,6 +1,7 @@
-export default function Card({message}) {
+export default function Card({message, type}) {
+
 				return (
-								<div className="message-card">
+								<div className={`message-card ${type}`}>
 												<div className="message-body">
 																<p>{message.message_content}</p>
 												</div>
