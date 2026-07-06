@@ -37,9 +37,19 @@ async function getChat(req, res) {
 												},
 								})
 
+								const recipient = await prisma.user.findUnique({
+												where: {
+																user_id: recipientId
+												},
+												omit: {
+																user_hash: true
+												}
+								})
+
 								return res.json({
 												success: true,
-												messages
+												messages,
+												recipient
 								})
 				} catch(e) {
 								console.error(e)
