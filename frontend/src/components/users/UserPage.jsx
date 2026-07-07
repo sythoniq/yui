@@ -1,3 +1,3 @@
 export default function UserPage() {
-
+				// TODO: Fetch the user details... modify the backend to handle profile images and a route to handle the change/updates to the user profile...
 }
