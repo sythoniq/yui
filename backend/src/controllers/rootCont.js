@@ -104,11 +104,50 @@ async function authUser(req, res) {
 }
 
 async function getUserProfile(req, res) {
-				
+				const user = await prisma.user.findUnique({
+								where: {
+												user_id: Number(req.params.userId),
+								},
+								omit: {
+												user_hash: true
+								},
+								include: {
+												profile_image: {
+																select: {
+																				image_bytea: true
+																}
+												}
+								}
+				})
+
+				if (!user) {
+								return res.status(404).json({success: false, message: "User not found"})
+				}
+
+				res.json({success: true, user});
 }
 
 async function updateUserProfile(req, res) {
-				
+				const user = await prisma.user.findUnique({
+								where: {
+												user_id: Number(req.params.userId)
+								}
+				})
+
+				console.log(req.file, req.body, req.user);
+
+				const reader = new FileReader();
+				const img = reader.readAsDataURL(req.file.buffer);
+				console.log(img);
+
+				if (req.user.user_id != user.user_id) {
+								return res.status(501).json({success: false, message: "Unauthorized"})
+				}
+
+				if (!user) {
+								return res.status(404).json({success: false, message: "User not found"})
+				}
+
 }
 
 module.exports = {
