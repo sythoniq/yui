@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs")
 
 const prisma = require("../libs/prisma.js")
 
+
 async function registerUser(req, res, next) {
 				try {
 								const { username, password } = req.body 
@@ -102,10 +103,19 @@ async function authUser(req, res) {
 				return res.json({success: false, message: "Unauthed"})
 }
 
+async function getUserProfile(req, res) {
+				
+}
+
+async function updateUserProfile(req, res) {
+				
+}
 
 module.exports = {
 				registerUser,
 				loginUser,
 				getUsers,
-				authUser
+				authUser,
+				getUserProfile,
+				updateUserProfile
 }

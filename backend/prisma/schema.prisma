@@ -19,6 +19,8 @@ model User {
 
   received_messages Message[] @relation("MessageReceiver")
   sent_messages Message[] @relation("MessageSender")
+
+  profile_image Profile[]
 }
 
 model Message {
@@ -33,3 +35,11 @@ model Message {
   receiver_id Int
 }
 
+// Strictly to provide a way to have images as pfps...
+model Profile {
+  image_id  Int   @id @default(autoincrement())
+  image_url String
+
+  user_profile User @relation(fields: [profile_id], references: [user_id])
+  profile_id  Int
+}
