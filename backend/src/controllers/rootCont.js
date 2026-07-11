@@ -7,6 +7,49 @@ const bcrypt = require("bcryptjs")
 
 const prisma = require("../libs/prisma.js")
 
+async function uploadProfileImage(file, user) {
+				// Function to upload the users profile image to supabase just so that I can clean up abit
+				const { data, error } = await supabase.storage.from('yui').upload(`/${file.originalname}`, file.buffer, {
+								upsert: true,
+								contentType: file.mimetype
+				})
+
+				if (error) {
+								return error;
+				}
+
+				const response = supabase.storage.from("yui").getPublicUrl(`/${file.originalname}`);
+
+				if (user.profile_image.length <= 0) {
+								const profile = await prisma.user.update({
+												where: {
+																user_id: user.user_id
+												},
+												data: {
+																profile_image: {
+																				create: {
+																								image_url: response.data.publicUrl
+																				}
+																}
+												}
+								})
+
+								return profile;
+				}
+
+				const imgId = user.profile_image[0].image_id;
+				const profile = await prisma.profile.update({
+								where: {
+												image_id: imgId
+								},
+								data: {
+												image_url: response.data.publicUrl
+								}
+				})
+
+				return profile
+}
+
 async function registerUser(req, res, next) {
 				try {
 								const { username, password } = req.body 
@@ -118,7 +161,7 @@ async function getUserProfile(req, res) {
 								include: {
 												profile_image: {
 																select: {
-																				image_bytea: true
+																				image_url: true
 																}
 												}
 								}
@@ -135,6 +178,9 @@ async function updateUserProfile(req, res) {
 				const user = await prisma.user.findUnique({
 								where: {
 												user_id: Number(req.params.userId)
+								},
+								include: {
+												profile_image: true
 								}
 				})
 
@@ -147,31 +193,11 @@ async function updateUserProfile(req, res) {
 				}
 
 				const file = req.file;
-				const { data, error } = await supabase.storage.from('yui').upload(`/${file.originalname}`, file, {
-								upsert: true,
-								contentType: file.mimetype
-				})
 
-				if (error) {
-								return res.status(500).json({success: false, error})
+				const profile = await uploadProfileImage(file, user);
+				if (!profile) {
+								return res.status(501).json({success: false, message: "Error at the db"})
 				}
-
-				const response = supabase.storage.from("yui").getPublicUrl(`/${file.originalname}`);
-
-				await prisma.user.update({
-								where: {
-												user_id: user.user_id
-								},
-								data: {
-												profile_image: {
-																create: {
-																				image_url: response.data.publicUrl
-																}
-												}
-								}
-				})
-
-				const profile = await prisma.profile.findMany({})
 
 				return res.json({success: true, profile})
 }
