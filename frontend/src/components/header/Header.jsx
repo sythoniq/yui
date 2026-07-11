@@ -42,7 +42,7 @@ export default function Header() {
 												<Link to="/"><h2>Yui</h2></Link>
 												<nav className="page-nav">
 																{isLoggedIn ? (
-																				<Link to={`/profile/${user.userid}`}>
+																				<Link to={`/profile/${user.user_id}`}>
 																								<h4>{user.user_name}</h4>
 																				</Link>
 																) : (
