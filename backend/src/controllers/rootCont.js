@@ -1,9 +1,11 @@
 require("dotenv").config()
+
+const { createClient } = require("@supabase/supabase-js")
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY) // Project url n secret key (to bypass rls) are what I have here...
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
 const prisma = require("../libs/prisma.js")
-
 
 async function registerUser(req, res, next) {
 				try {
@@ -73,7 +75,7 @@ async function getUsers(req, res) {
 												return res.json({sucess: true, users})
 								}
 
-								const userId = req.user.user_id;
+								const userId = req.user.userid;
 								users = users.filter((usr) => usr.user_id != userId);
 
 								return res.json({sucess: true, users});
@@ -126,7 +128,7 @@ async function getUserProfile(req, res) {
 								return res.status(404).json({success: false, message: "User not found"})
 				}
 
-				res.json({success: true, user});
+				return res.json({success: true, user});
 }
 
 async function updateUserProfile(req, res) {
@@ -136,9 +138,7 @@ async function updateUserProfile(req, res) {
 								}
 				})
 
-				console.log(req.file, req.body, req.user);
-
-				if (req.user.user_id != user.user_id) {
+				if (req.user.userid != user.user_id) {
 								return res.status(501).json({success: false, message: "Unauthorized"})
 				}
 
@@ -146,6 +146,34 @@ async function updateUserProfile(req, res) {
 								return res.status(404).json({success: false, message: "User not found"})
 				}
 
+				const file = req.file;
+				const { data, error } = await supabase.storage.from('yui').upload(`/${file.originalname}`, file, {
+								upsert: true,
+								contentType: file.mimetype
+				})
+
+				if (error) {
+								return res.status(500).json({success: false, error})
+				}
+
+				const response = supabase.storage.from("yui").getPublicUrl(`/${file.originalname}`);
+
+				await prisma.user.update({
+								where: {
+												user_id: user.user_id
+								},
+								data: {
+												profile_image: {
+																create: {
+																				image_url: response.data.publicUrl
+																}
+												}
+								}
+				})
+
+				const profile = await prisma.profile.findMany({})
+
+				return res.json({success: true, profile})
 }
 
 module.exports = {
