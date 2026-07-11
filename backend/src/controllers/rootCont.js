@@ -69,14 +69,16 @@ async function getUsers(req, res) {
 												}
 								});
 
-								if (req.user) {
-												users = users.filter((usr) => usr.user_id != req.user.userid)
+								if (req.user == null) {
+												return res.json({sucess: true, users})
 								}
 
-								return res.json({success: true, users});
+								const userId = req.user.user_id;
+								users = users.filter((usr) => usr.user_id != userId);
+
+								return res.json({sucess: true, users});
 				} catch (e) {
 								console.error(e)
-								return res.status(404).json({success: false, message: "Unexpected Error"});
 				}
 }
 
@@ -135,10 +137,6 @@ async function updateUserProfile(req, res) {
 				})
 
 				console.log(req.file, req.body, req.user);
-
-				const reader = new FileReader();
-				const img = reader.readAsDataURL(req.file.buffer);
-				console.log(img);
 
 				if (req.user.user_id != user.user_id) {
 								return res.status(501).json({success: false, message: "Unauthorized"})

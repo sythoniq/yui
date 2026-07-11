@@ -8,15 +8,15 @@ module.exports = (async (req, res, next) => {
 
 								if (!token) {
 												req.user = null;
-												next()
+												return next()
 								}
 
 								const result = jwt.decode(token, process.env.JWT_SECRET);
 								req.user = result;
 
-								next()
+								return next()
 				} catch (e) {
 								req.user = null;
-								next()
+								return next()
 				}
 })
