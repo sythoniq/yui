@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { useParams, useLoaderData } from 'react-router'
 
+import Avatar from './Avatar.jsx'
+
 export default function UserPage() {
 				const API = import.meta.env.VITE_BASE_API
+
 				const [file, setFile] = useState()
 				const user = useLoaderData()
-				console.log(user);
 
+				const profileImage = user.profile_image[0].image_url;
 				const { userId } = useParams()
 				const token = localStorage.getItem("jwt-token");
 
@@ -32,7 +35,7 @@ export default function UserPage() {
 				return (
 								<>
 												<form encType="multipart/form-data">
-																<img src="#" alt="Profile Image" />
+																<Avatar imgUrl={profileImage}/>
 																<input type="file" name="profile-image" onChange={(e) => setFile(e.target.files[0])}/>
 
 																<button onClick={handleProfile}>Save</button>
