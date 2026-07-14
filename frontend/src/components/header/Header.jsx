@@ -2,8 +2,11 @@ import './Header.css'
 import { Link } from 'react-router'
 import { useState, useEffect } from 'react'
 
+import Avatar from '../users/Avatar.jsx'
+
 export default function Header() {
 				const API = import.meta.env.VITE_BASE_API
+
 				const [ isLoggedIn, setLoggedIn ] = useState()
 				const [ user, setUser ] = useState() 
 
@@ -37,13 +40,15 @@ export default function Header() {
 								}
 				}, [])
 
+				const userProfile = user.profile_image[0].image_url;
+
 				return (
 								<header className="page-heading">
 												<Link to="/"><h2>Yui</h2></Link>
 												<nav className="page-nav">
 																{isLoggedIn ? (
 																				<Link to={`/profile/${user.user_id}`}>
-																								<h4>{user.user_name}</h4>
+																								<Avatar imgUrl={userProfile} />
 																				</Link>
 																) : (
 																				<Link to="/login"><h4>Login</h4></Link>

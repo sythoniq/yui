@@ -142,6 +142,9 @@ async function authUser(req, res) {
 												},
 												omit: {
 																user_hash: true
+												},
+												include: {
+																profile_image: true
 												}
 								})
 
