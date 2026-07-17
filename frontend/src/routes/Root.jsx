@@ -7,65 +7,47 @@ import UserPage from '../components/users/UserPage.jsx'
 const API = import.meta.env.VITE_BASE_API
 const token = localStorage.getItem("jwt-token") || null;
 
-async function getMessages({params}) {
-				const res = await fetch(`${API}/chat/${params.userId}`, {
-								headers: {
-												"Content-Type": "application/json",
-												"Authorization": token
-								}
-				});
-				const data = await res.json()
-				if (!data.success) {
-								console.error("Error fetching messages")
-				}
-
-				const messages = data.messages;
-				const recipient = data.recipient;
-
-				return { messages, recipient }
-}
-
+// ERROR: Absolutely redudant atm.. need to fix supabase stuff with ownership as well
 async function getUserProfile({params}) {
-				const res = await fetch(`${API}/user/${params.userId}`, {
-								headers: {
-												"Authorization": token
-								}
-				})
-				const data = await res.json()
+	const res = await fetch(`${API}/user/${params.userId}`, {
+		headers: {
+			"Authorization": token
+		}
+	})
+	const data = await res.json()
 
-				if (!data.success) {
-								return data;
-				}
+	if (!data.success) {
+		return data;
+	}
 
-				return data.user
+	return data.user
 }
 
 
 const routes = [
-				{
-								path: "/",
-								element: <App />,
-								children: [
-												{
-																path: "/chat/:userId",
-																element: <Chat />,
-																loader: getMessages
-												}
-								]
-				},
-				{
-								path: "/login",
-								element: <Login />
-				},
-				{
-								path: "/register",
-								element: <Register />
-				},
-				{
-								path: "/profile/:userId",
-								element: <UserPage />,
-								loader: getUserProfile
-				}
+	{
+		path: "/",
+		element: <App />,
+		children: [
+			{
+				path: "/chat/:userId",
+				element: <Chat />,
+			}
+		]
+	},
+	{
+		path: "/login",
+		element: <Login />
+	},
+	{
+		path: "/register",
+		element: <Register />
+	},
+	{
+		path: "/profile/:userId",
+		element: <UserPage />,
+		loader: getUserProfile
+	}
 ]
 
 export default routes
