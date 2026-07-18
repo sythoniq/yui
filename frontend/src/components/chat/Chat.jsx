@@ -1,5 +1,7 @@
 import Card from './Card.jsx'
 import useGetMessages from '../../hooks/useGetMessages'
+import Load from "../Load.jsx"
+import Error from '../Error.jsx'
 
 import "./Chat.css"
 
@@ -11,7 +13,7 @@ export default function Chat() {
 
 	const navigate = useNavigate()
 	const { userId } = useParams() // This would be the user on the other end..
-	const [ isLoading, error, messages, recipient ] = useGetMessages(`${API}/chat/${userId}`)
+	let [ isLoading, error, messages, recipient ] = useGetMessages(`${API}/chat/${userId}`)
 	const [ message, setMessage ] = useState()
 
 	async function handleMessage(e) {
@@ -31,24 +33,22 @@ export default function Chat() {
 			if (!data.success) {
 				throw new Error(data.error)
 			}
-			// TODO: Instead of reloading the page might wanna fetch messages again... makesi t easier to render the messages i believe, or add a timer to the message fetching so that every once in a while messages are fetched
-			navigate(0)				
+			// TODO: Rerendering is such a bad choice here... need to find a way to actually get the messages again
+			navigate(0)
 		} catch(e) {
-			console.error(e);
+			error = e.message;
 		} 
 	}
 
 	if (isLoading) {
-		//TODO: Handle chat page loading
 		return (
-			<p>Loading... </p>
+			<Load type="chat" />
 		)
 	}
 
 	if (error) {
-		// TODO: Handle error state of the page
 		return (
-			<p>Error: {error.message}</p>
+			<Error error={error} />
 		)
 	}
 
@@ -68,13 +68,13 @@ export default function Chat() {
 						<Card key={msg.message_id} message={msg} type="sent" />
 					)
 				})}
-			</div>
-			<form className="send-message">
-				<label htmlFor="messageBody"></label>
-				<input type="text" id="messageBody" name="messageBody" placeholder="Message" onChange={(e) => setMessage(e.target.value)} />
+				<form className="send-message">
+					<label htmlFor="messageBody"></label>
+					<input type="text" id="messageBody" name="messageBody" placeholder="Message" onChange={(e) => setMessage(e.target.value)} />
 
-				<button onClick={handleMessage}>Send</button>
-			</form>
+					<button onClick={handleMessage}>Send</button>
+				</form>
+			</div>
 		</main>
 	)
 }

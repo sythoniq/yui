@@ -43,11 +43,6 @@ const routes = [
 		path: "/register",
 		element: <Register />
 	},
-	{
-		path: "/profile/:userId",
-		element: <UserPage />,
-		loader: getUserProfile
-	}
 ]
 
 export default routes

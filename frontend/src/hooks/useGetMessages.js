@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 
 export default function useGetMessages(url) {
 	const [ isLoading, setIsLoading ] = useState(true)
-	const [ messages, setMessages ] = useState()
+	const [ messages, setMessages ] = useState(null)
 	const [ error, setError ] = useState(undefined)
-	const [ recipient, setRecipient ] = useState()
+	const [ recipient, setRecipient ] = useState(null)
 
 	useEffect(() => {
 		let active = true;
@@ -17,7 +17,12 @@ export default function useGetMessages(url) {
 			});
 			const data = await res.json()
 
-			// ERROR: Need to figure out how to get the error status so that I can work with that..
+			if (!data) {
+				setError("Timeout error")
+				setIsLoading(false)
+				return;
+			}
+			// TODO: Need to figure out how to get the error status so that I can work with that..
 			if (active) {
 				if (!data.success) {
 					setError(data)
@@ -40,5 +45,6 @@ export default function useGetMessages(url) {
 			active = false
 		}
 	}, [url])
+
 	return [isLoading, error, messages, recipient]
 }
