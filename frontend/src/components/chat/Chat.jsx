@@ -13,7 +13,7 @@ export default function Chat() {
 
 	const navigate = useNavigate()
 	const { userId } = useParams() // This would be the user on the other end..
-	let [ isLoading, error, messages, recipient ] = useGetMessages(`${API}/chat/${userId}`)
+	const [ isLoading, error, messages, recipient ] = useGetMessages(`${API}/chat/${userId}`)
 	const [ message, setMessage ] = useState()
 
 	async function handleMessage(e) {
@@ -24,7 +24,7 @@ export default function Chat() {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": localStorage.getItem("jwt-token")
+					"Authorization": null
 				},
 				body: JSON.stringify({message})
 			})
@@ -33,10 +33,10 @@ export default function Chat() {
 			if (!data.success) {
 				throw new Error(data.error)
 			}
-			// TODO: Rerendering is such a bad choice here... need to find a way to actually get the messages again
+			// TODO: Rerendering is such a bad choice here... need to find a way to actually get the messages to load again
 			navigate(0)
 		} catch(e) {
-			error = e.message;
+			console.error(e);
 		} 
 	}
 

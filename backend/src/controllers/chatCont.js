@@ -82,8 +82,9 @@ async function sendChat(req, res) {
 
 		const messageBody = req.body.message
 
+		// TODO: Remove this after adding express validator...
 		if (!messageBody) {
-			return res.status(500).json({success: false, message: "Message body not found"})
+			return res.status(400).json({success: false, message: "Message body not found"})
 		}
 
 		const message = await prisma.message.create({

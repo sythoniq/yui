@@ -120,7 +120,7 @@ async function getUsers(req, res) {
 
 		return res.status(200).json({success: true, users});
 	} catch (e) {
-		res.status(501).json({success: false, error: "Failed to fetch users!"})
+		res.status(500).json({success: false, error: "Failed to fetch users!"})
 	}
 }
 

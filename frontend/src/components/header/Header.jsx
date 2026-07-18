@@ -15,30 +15,33 @@ export default function Header() {
 
 	useEffect(() => {
 		async function authUser() {
-			if (!token) {
-				setLoggedIn(false)
-				setUser(null)
-				return;
-			}
-			const res = await fetch(`${API}/auth`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					"Authorization": token
+			try {
+				if (!token) {
+					setLoggedIn(false)
+					setUser(null)
+					return;
 				}
-			})
+				const res = await fetch(`${API}/auth`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": token
+					}
+				})
 
-			const data = await res.json()
-			if (!data.success) {
-				console.error("Error", data.message)
+				const data = await res.json()
+				if (!data.success) {
+					console.error(e);
+					return;
+				}
+				setLoggedIn(true)
+				setUser(data.user)	
+			} catch(e) {
+				console.error(e.message)	
 			}
-			setLoggedIn(true)
-			setUser(data.user)
 		}
-
-		return () => {
-			authUser()
-		}
+		
+		authUser()
 	}, [])
 
 
