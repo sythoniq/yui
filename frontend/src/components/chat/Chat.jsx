@@ -20,23 +20,32 @@ export default function Chat() {
 		e.preventDefault();
 
 		try {
+			if (!message) {
+				return;
+			}
+
 			const res = await fetch(`${API}/chat/send/${userId}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": null
+					"Authorization": localStorage.getItem("jwt-token")
 				},
 				body: JSON.stringify({message})
 			})
 			const data = await res.json()
 
+			if (res.status == 401) {
+				navigate("/login");
+			}
+
 			if (!data.success) {
 				throw new Error(data.error)
+				return;
 			}
 			// TODO: Rerendering is such a bad choice here... need to find a way to actually get the messages to load again
 			navigate(0)
 		} catch(e) {
-			console.error(e);
+			console.error(e)
 		} 
 	}
 
