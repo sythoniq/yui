@@ -57,14 +57,14 @@ async function getChat(req, res) {
 			recipient
 		})
 	} catch(e) {
-		return res.status(500).json({success: false, message: "Unexpected error occurred"})
+		return res.status(500).json({success: false, message: "Unexpected error occurred", error: e})
 	}
 }
 
 async function sendChat(req, res) {
 	try {
 		if (!req.user) {
-			return res.status(401).json({ success: false, message: "Unauthorized to send message"})
+			return res.status(401).json({ success: false, message: "Unauthorized to send message", error: e})
 		}
 
 		const senderId = Number(req.user.userid);
@@ -76,17 +76,7 @@ async function sendChat(req, res) {
 			}
 		})
 
-		if (!receiver) {
-			return res.status(404).json({success: false, message: "Recipient user not found"})
-		}
-
 		const messageBody = req.body.message
-
-		// TODO: Remove this after adding express validator...
-		if (!messageBody) {
-			return res.status(400).json({success: false, message: "Message body not found"})
-		}
-
 		const message = await prisma.message.create({
 			data: {
 				message_content: messageBody,
@@ -95,12 +85,12 @@ async function sendChat(req, res) {
 			}
 		})
 
-		return res.json({
+		return res.status(200).json({
 			success: true,
 			message
 		})
 	}catch(e) {
-		return res.status(500).json({success: false, message: "Unexpected error occured"})
+		return res.status(500).json({success: false, message: "Unexpected error occured", error: e})
 	}
 }
 

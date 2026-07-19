@@ -15,6 +15,7 @@ export default function Chat() {
 	const { userId } = useParams() // This would be the user on the other end..
 	const [ isLoading, error, messages, recipient ] = useGetMessages(`${API}/chat/${userId}`)
 	const [ message, setMessage ] = useState()
+	const [ isError, setIsError ] = useState(null)
 
 	async function handleMessage(e) {
 		e.preventDefault();
@@ -35,17 +36,16 @@ export default function Chat() {
 			const data = await res.json()
 
 			if (res.status == 401) {
-				navigate("/login");
+				return navigate("/login");
 			}
 
 			if (!data.success) {
-				throw new Error(data.error)
-				return;
+				return setIsError(data.error)
 			}
 			// TODO: Rerendering is such a bad choice here... need to find a way to actually get the messages to load again
-			navigate(0)
+			return navigate(0)
 		} catch(e) {
-			console.error(e)
+			setIsError(e.message)
 		} 
 	}
 
@@ -83,6 +83,7 @@ export default function Chat() {
 
 					<button onClick={handleMessage}>Send</button>
 				</form>
+				{ isError && <span>{isError}</span> }
 			</div>
 		</main>
 	)
