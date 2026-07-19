@@ -45,7 +45,7 @@ export default function Header() {
 		}
 		
 		authUser()
-	}, [API])
+	}, [token])
 
 
 	return (

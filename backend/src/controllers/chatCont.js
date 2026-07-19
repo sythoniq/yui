@@ -67,7 +67,7 @@ async function getChat(req, res) {
 async function sendChat(req, res) {
 	try {
 		if (!req.user) {
-			return res.status(401).json({ success: false, message: "Unauthorized to send message", error: e})
+			return res.status(401).json({ success: false, message: "Unauthorized to send message"})
 		}
 
 		const senderId = Number(req.user.userid);

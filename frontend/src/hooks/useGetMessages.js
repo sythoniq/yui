@@ -13,36 +13,42 @@ export default function useGetMessages(url) {
 		let active = true;
 
 		async function fetchMessages() {
-			const res = await fetch(url, {
-				headers: {
-					"Authorization": localStorage.getItem("jwt-token")
+			try {
+				const res = await fetch(url, {
+					headers: {
+						"Authorization": localStorage.getItem("jwt-token")
+					}
+				});
+				const data = await res.json()
+
+				if (res.status == 401) {
+					return navigate("/login")
 				}
-			});
-			const data = await res.json()
 
-			if (res.status == 401) {
-				return navigate("/login")
-			}
-
-			if (!data) {
-				setError("Timeout error")
-				setIsLoading(false)
-				return;
-			}
-			if (active) {
-				if (!data.success) {
-					setError(data)
+				if (!data) {
+					setError("Timeout error")
 					setIsLoading(false)
-					setMessages(null)
-					setRecipient(null)
 					return;
 				}
-				setMessages(data.messages)
-				setRecipient(data.recipient)
+				if (active) {
+					if (!data.success) {
+						setError(data)
+						setIsLoading(false)
+						setMessages(null)
+						setRecipient(null)
+						return;
+					}
+					setMessages(data.messages)
+					setRecipient(data.recipient)
+					setIsLoading(false)
+					setError(undefined)
+					return;
+				}
+			} catch(e) {
+				setError(e.message)
 				setIsLoading(false)
-				setError(undefined)
-				return;
 			}
+
 		}
 
 		fetchMessages()
