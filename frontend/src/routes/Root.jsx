@@ -7,7 +7,6 @@ import UserPage from '../components/users/UserPage.jsx'
 const API = import.meta.env.VITE_BASE_API
 const token = localStorage.getItem("jwt-token") || null;
 
-// ERROR: Absolutely redudant atm.. need to fix supabase stuff with ownership as well
 async function getUserProfile({params}) {
 	const res = await fetch(`${API}/user/${params.userId}`, {
 		headers: {
@@ -43,6 +42,10 @@ const routes = [
 		path: "/register",
 		element: <Register />
 	},
+	{
+		path: '/profile/:userId',
+		element: <UserPage />
+	}
 ]
 
 export default routes

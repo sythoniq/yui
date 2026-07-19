@@ -45,7 +45,7 @@ export default function useGetMessages(url) {
 					return;
 				}
 			} catch(e) {
-				setError(e.message)
+				setError(e)
 				setIsLoading(false)
 			}
 
