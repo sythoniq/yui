@@ -12,15 +12,13 @@ module.exports = ((req, res, next) => {
 			req.user = null;
 			return next()
 		}
-		jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
-			if (error) {
-				req.user = null;
-				return next()
-			}
 
-			req.user = decoded
-			return next()
-		})
+		const result = jwt.verify(token, process.env.JWT_SECRET);
+		if (!result) {
+			throw new Error("Verification failed")
+		}
+		req.user = result
+		return next()
 	} catch (e) {
 		req.user = null;
 		return next()

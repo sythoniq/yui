@@ -1,26 +1,25 @@
 require("dotenv").config()
 
-// const { createClient } = require("@supabase/supabase-js")
-// const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY) // Project url n secret key (to bypass rls) are what I have here...
+const { createClient } = require("@supabase/supabase-js")
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY) // Project url n secret key (to bypass rls) are what I have here...
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
 const prisma = require("../libs/prisma.js")
 
-// ERROR: Need to scrap this and properly implement a owner based upload system with supabase... literally a useless function atm
-
-/* async function uploadProfileImage(file, user) {
-	// Function to upload the users profile image to supabase just so that I can clean up abit
-	const { data, error } = await supabase.storage.from('yui').upload(`/${file.originalname}`, file.buffer, {
+async function uploadProfileImage(file, user) {
+	const { data, error } = await supabase.storage.from('yui').upload(`${user.user_id}/${file.originalname}`, file.buffer, {
 		upsert: true,
 		contentType: file.mimetype
 	})
 
 	if (error) {
-		return error;
+		return {
+			error
+		}
 	}
 
-	const response = supabase.storage.from("yui").getPublicUrl(`/${file.originalname}`);
+	const response = supabase.storage.from("yui").getPublicUrl(`${user.user_id}/${file.originalname}`);
 
 	if (user.profile_image.length <= 0) {
 		const profile = await prisma.user.update({
@@ -50,7 +49,7 @@ const prisma = require("../libs/prisma.js")
 	})
 
 	return profile
-} */
+}
 
 async function registerUser(req, res) {
 	try {
@@ -146,6 +145,9 @@ async function authUser(req, res) {
 			}, 
 			omit: {
 				user_hash: true
+			},
+			include: {
+				profile_image: true
 			}
 		})
 
@@ -187,41 +189,36 @@ async function getUserProfile(req, res) {
 	}
 }
 
-// ERROR: This function is useless until i fix the user profile upload process..
 async function updateUserProfile(req, res) {
 	try {
 		const user = await prisma.user.findUnique({
 			where: {
 				user_id: Number(req.params.userId)
 			},
+			omit: {
+				user_hash: true
+			},
 			include: {
 				profile_image: true
 			}
 		})
 
-		if (req.user.userid != user.user_id) {
-			return res.status(501).json({success: false, message: "Unauthorized"})
-		}
-
 		if (!user) {
 			return res.status(404).json({success: false, message: "User not found"})
 		}
 
-		const file = req.file;
-
-		if (!file) {
-			throw new Error("Profile file not found")
+		if (req.user.userid != user.user_id) {
+			return res.status(401).json({success: false, message: "Unauthorized"})
 		}
 
-		/* const profile = await uploadProfileImage(file, user);
-		if (!profile) {
-			return res.status(501).json({success: false, message: "Error uploading profile image to supabase"})
+		const profile = await uploadProfileImage(req.file, user);
+		if (profile.error) {
+			return res.status(500).json({success: false, message: "Supabase error", error: profile.error.message})
 		}
-		*/
 
-		return res.json({success: true, message: "dead route atm"})
+		return res.status(200).json({success: true, message: "Uploaded profile", user})
 	} catch(e) {
-		return res.status(500).json({ success: false, message: "Failed to update user profile", error: e})
+		return res.status(500).json({ success: false, message: "Failed to update user profile", error: e.message })
 	}
 }
 

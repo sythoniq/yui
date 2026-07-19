@@ -2,6 +2,7 @@ import Card from './Card.jsx'
 import useGetMessages from '../../hooks/useGetMessages'
 import Load from "../Load.jsx"
 import Error from '../Error.jsx'
+import Avatar from '../users/Avatar.jsx'
 
 import "./Chat.css"
 
@@ -16,6 +17,7 @@ export default function Chat() {
 	const [ isLoading, error, messages, recipient ] = useGetMessages(`${API}/chat/${userId}`)
 	const [ message, setMessage ] = useState()
 	const [ isError, setIsError ] = useState(null)
+	let userProfile
 
 	async function handleMessage(e) {
 		e.preventDefault();
@@ -57,14 +59,18 @@ export default function Chat() {
 
 	if (error) {
 		return (
-			<Error error={error} />
+			<Error error={error.message} />
 		)
+	}
+
+	if (recipient.profile_image.length > 0) {
+		userProfile = recipient.profile_image[0].image_url
 	}
 
 	return (
 		<main className="chat-body">
 			<div className="chat-header">
-				<h2>{recipient.user_name}</h2>
+				<Avatar imgUrl={userProfile} userName={recipient.user_name} />
 			</div>
 			<div className="messages">
 				{messages.map((msg) => {

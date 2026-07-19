@@ -4,42 +4,11 @@ import { useParams, useLoaderData } from 'react-router'
 import Avatar from './Avatar.jsx'
 
 export default function UserPage() {
-				const API = import.meta.env.VITE_BASE_API
+	const API = import.meta.env.VITE_BASE_API
+	
+	// TODO: Render the page for the user editing and render their profile image if they have one otherwiser render a default image.. then have a form for updating the user details as well as handling the updating of the user profile... when handling the user profile update ensure that I do check that a file is passed if not terminate the process and silently ignore the request...
 
-				const [file, setFile] = useState()
-				const user = useLoaderData()
-
-				const profileImage = user.profile_image[0].image_url;
-				const { userId } = useParams()
-				const token = localStorage.getItem("jwt-token");
-
-				async function handleProfile(e) {
-								e.preventDefault()
-
-								const formData = new FormData()
-								formData.append('profile', file);
-
-								const res = await fetch(`${API}/user/${userId}`, 
-												{
-																method: "POST",
-																headers: {
-																				"Authorization": token || null
-																},
-																body: formData
-												}
-								)
-								const data = await res.json()
-
-				}
-
-				return (
-								<>
-												<form encType="multipart/form-data">
-																<Avatar imgUrl={profileImage}/>
-																<input type="file" name="profile-image" onChange={(e) => setFile(e.target.files[0])}/>
-
-																<button onClick={handleProfile}>Save</button>
-												</form>
-								</>
-				)
+	return (
+		<p>Hi</p>
+	)
 }

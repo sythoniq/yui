@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router'
 
 export default function useGetMessages(url) {
 	const [ isLoading, setIsLoading ] = useState(true)
 	const [ messages, setMessages ] = useState(null)
 	const [ error, setError ] = useState(undefined)
 	const [ recipient, setRecipient ] = useState(null)
+
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		let active = true;
@@ -17,12 +20,15 @@ export default function useGetMessages(url) {
 			});
 			const data = await res.json()
 
+			if (res.status == 401) {
+				return navigate("/login")
+			}
+
 			if (!data) {
 				setError("Timeout error")
 				setIsLoading(false)
 				return;
 			}
-			// TODO: Need to figure out how to get the error status so that I can work with that..
 			if (active) {
 				if (!data.success) {
 					setError(data)

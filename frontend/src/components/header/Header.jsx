@@ -36,13 +36,16 @@ export default function Header() {
 				}
 				setLoggedIn(true)
 				setUser(data.user)	
+				if (data.user.profile_image.length > 0) {
+					setUserProfile(data.user.profile_image[0].image_url)
+				}
 			} catch(e) {
 				console.error(e.message)	
 			}
 		}
 		
 		authUser()
-	}, [])
+	}, [API])
 
 
 	return (
@@ -51,7 +54,7 @@ export default function Header() {
 			<nav className="page-nav">
 				{isLoggedIn ? (
 					<Link to={`/profile/${user.user_id}`}>
-						<Avatar imgUrl={userProfile} />
+						<Avatar imgUrl={userProfile} userName={user.user_name} />
 					</Link>
 				) : (
 						<Link to="/login"><h4>Login</h4></Link>

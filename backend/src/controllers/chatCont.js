@@ -16,6 +16,9 @@ async function getChat(req, res) {
 			},
 			omit: {
 				user_hash: true
+			},
+			include: {
+				profile_image: true
 			}
 		})
 
