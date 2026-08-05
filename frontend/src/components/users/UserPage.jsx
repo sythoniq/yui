@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useParams, useLoaderData } from 'react-router'
+import './Profile.css'
 
 import Load from '../Load.jsx'
 import Error from "../Error.jsx"
@@ -10,8 +11,6 @@ export default function UserPage() {
 	const API = import.meta.env.VITE_BASE_API
 	const { userId } = useParams()
 	const [ user, loading, error, userProfile ] = useGetUser(`${API}/user/${userId}`)
-
-	// TODO: Render the page for the user editing and render their profile image if they have one otherwise render a default image.. then have a form for updating the user details as well as handling the updating of the user profile... when handling the user profile update ensure that I do check that a file is passed if not terminate the process and silently ignore the request... but what about if the request is ummm not a profile change only?... rac
 
 	if (loading) {
 		return (
@@ -25,20 +24,45 @@ export default function UserPage() {
 		)
 	}
 
+	async function handleInfoUpdate(e) {
+		e.preventDefault()
+	}
+
+	async function handleProfileUpdate(e) {
+
+	}
+
+	function previewNewProfile(e) {
+		if (!e.target.files) {
+			return;
+		}
+		const prevImg = URL.createObjectURL(e.target.files[0])
+		const elm = document.querySelector(".user-image");
+		elm.src = prevImg;
+	}
+
 	return (
 		<main className="user-profile-page">
-			<Avatar imgUrl={userProfile} />
-			<section className="user-profile">
-				<form className="user-profile-form">
-					<div className="profile-upload">
-					</div>
-				</form>
+			<section className="page-side">
+				<h3>{user.user_name}</h3>
+				<div className="profile-container">
+					<Avatar imgUrl={userProfile} />
+					<input className="edit-profile-image" type="file" name="profile" accept="image/*" onChange={previewNewProfile} />
+				</div>
+				<div className="edit-image">
+					<button onClick={handleProfileUpdate}>Edit Profile</button>
+				</div>
 			</section>
 			<section className="user-details">
 				<form className="user-details-form">
-					<label htmlFor="userName">
+					<label htmlFor="userName"> Username
 						<input type="text" defaultValue={user.user_name} />
 					</label>
+					<label htmlFor="password"> Password
+						<input type="password" />
+					</label>
+
+					<button onClick={handleInfoUpdate}>Update Info</button>
 				</form>
 			</section>
 		</main>
