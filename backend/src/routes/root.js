@@ -15,6 +15,7 @@ root.get("/auth", controller.authUser);
 root.get("/user/:userId", controller.getUserProfile)
 
 root.post("/user/update/:userId", upload.single("profile"), controller.updateUserProfile)
+root.post("/user/details/:userId", controller.updateUserDetails)
 
 root.post("/register", controller.registerUser)
 root.post("/login", controller.loginUser)

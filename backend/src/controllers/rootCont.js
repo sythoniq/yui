@@ -222,11 +222,48 @@ async function updateUserProfile(req, res) {
 	}
 }
 
+async function updateUserDetails(req, res) {
+	try {
+		const user = await prisma.user.findUnique({
+			where: {
+				user_id: Number(req.user.userid)
+			}
+		})
+
+		if (!user) {
+			return res.status(404).json({success: false, message: "User not found"})
+		}
+
+		if (!req.body) {
+			return;
+		}
+
+		const { username, password } = req.body;
+		const hashedPassword = await bcrypt.hash(password, 10)
+		await prisma.user.update({
+			where: {
+				user_id: Number(req.user.userid)
+			},
+			data: {
+				user_name: username,
+				user_hash: hashedPassword
+			}
+		})	
+
+		return res.status(200).json({success: true, message: "User details updated"})
+		
+	} catch (e) {
+		console.log(e)
+		return res.status(500).json({success: false, message: "Unexpected error occured", error: e})
+	}
+}
+
 module.exports = {
 	registerUser,
 	loginUser,
 	getUsers,
 	authUser,
 	getUserProfile,
-	updateUserProfile
+	updateUserProfile,
+	updateUserDetails
 }
