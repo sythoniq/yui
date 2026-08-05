@@ -5,6 +5,7 @@ export default function useGetUser(url) {
 	const [ user, setUser ] = useState(null)
 	const [ isLoading, setIsLoading ] = useState(true)
 	const [ isError, setIsError ] = useState(null) 
+	const [ userProfile, setUserProfile ] = useState(null)
 
 	const navigate = useNavigate()
 
@@ -39,17 +40,22 @@ export default function useGetUser(url) {
 
 					setUser(data.user)
 					setIsLoading(false)
+					if (data.user.profile_image.length > 0) {
+						setUserProfile(data.user.profile_image[0].image_url)
+					}
 				}
 			} catch(e) {
 				setError(e.message)
 				setIsLoading(false)
 			}
 		}
+
 		getUser()
 
 		return () => {
 			active = false
 		}
 	}, [token])
-	return [ user, isLoading, isError ];	
+
+	return [ user, isLoading, isError, userProfile ];	
 }

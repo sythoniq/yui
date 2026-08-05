@@ -26,6 +26,7 @@ export default function useGetUsers(url) {
 				}
 				if (active) {
 					if (!data.success) {
+						console.log(data);
 						setError(data.error)
 						setUsers(null)
 						setIsLoading(false)
