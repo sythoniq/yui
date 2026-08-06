@@ -107,6 +107,9 @@ async function getUsers(req, res) {
 		let users = await prisma.user.findMany({
 			omit: {
 				user_hash: true
+			},
+			include: {
+				profile_image: true
 			}
 		});
 
