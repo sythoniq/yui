@@ -35,7 +35,9 @@ export default function useAuthUser(url, token) {
 			setIsLoading(false)
 			setLoggedIn(true)
 			setUser(data.user)
-			setUserProfile(data.user.profile_image[0].image_url)
+			if (data.user.profile_image.length > 0) {
+				setUserProfile(data.user.profile_image[0].image_url)
+			}
 		}
 
 		auth()

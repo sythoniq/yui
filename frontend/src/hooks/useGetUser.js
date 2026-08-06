@@ -33,7 +33,7 @@ export default function useGetUser(url) {
 
 				if (active) {
 					if (!data.success) {
-						setError(data.error.message)
+						setIsError(data.error.message)
 						setIsLoading(false)
 						return;
 					}
@@ -45,7 +45,7 @@ export default function useGetUser(url) {
 					}
 				}
 			} catch(e) {
-				setError(e.message)
+				setIsError(e.message)
 				setIsLoading(false)
 			}
 		}
