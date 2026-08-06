@@ -60,7 +60,7 @@ async function getChat(req, res) {
 			recipient
 		})
 	} catch(e) {
-		return res.status(500).json({success: false, message: "Unexpected error occurred", error: e})
+		return res.status(500).json({success: false, message: "Unexpected error occurred", error: e.message})
 	}
 }
 
@@ -79,6 +79,10 @@ async function sendChat(req, res) {
 			}
 		})
 
+		if (!receiver) {
+			return res.status(404).json({success: false, message: "User not found"})
+		}
+
 		const messageBody = req.body.message
 		const message = await prisma.message.create({
 			data: {
@@ -93,7 +97,7 @@ async function sendChat(req, res) {
 			message
 		})
 	}catch(e) {
-		return res.status(500).json({success: false, message: "Unexpected error occured", error: e})
+		return res.status(500).json({success: false, message: "Unexpected error occured", error: e.message})
 	}
 }
 

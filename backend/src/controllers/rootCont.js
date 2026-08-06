@@ -71,7 +71,7 @@ async function registerUser(req, res) {
 			}
 		})
 	} catch(e) {
-		return res.status(500).json({success: false, message: "Failed to create user", error: e})
+		return res.status(500).json({success: false, message: "Failed to create user", error: e.message})
 	}
 }
 
@@ -98,7 +98,7 @@ async function loginUser(req, res) {
 		return res.status(200).json({ success: true, token })
 
 	} catch(e) {
-		return res.status(500).json({success: false, message: "Failed to login the user", error: e})
+		return res.status(500).json({success: false, message: "Failed to login the user", error: e.message})
 	} 
 }
 
@@ -157,7 +157,7 @@ async function authUser(req, res) {
 
 		return res.status(200).json({success: true, message: "User verified", user})
 	} catch(e) {
-		return res.status(500).json({success: false, message: "Unexpected error occurred", error: e})
+		return res.status(500).json({success: false, message: "Unexpected error occurred", error: e.message})
 	}
 }
 
@@ -185,7 +185,7 @@ async function getUserProfile(req, res) {
 
 		return res.json({success: true, user});
 	} catch(e) {
-		return res.status(500).json({success: false, message: "Failed to get user profile", error: e})
+		return res.status(500).json({success: false, message: "Failed to get user profile", error: e.message})
 	}
 }
 
@@ -239,6 +239,19 @@ async function updateUserDetails(req, res) {
 		}
 
 		const { username, password } = req.body;
+		if (!password) {
+			await prisma.user.update({
+				where: {
+					user_id: Number(req.user.userid)
+				},
+				data: {
+					user_name: username,
+				}
+			})	
+
+			return res.status(200).json({success: true, message: "User details updated"})
+		}
+
 		const hashedPassword = await bcrypt.hash(password, 10)
 		await prisma.user.update({
 			where: {
@@ -254,7 +267,7 @@ async function updateUserDetails(req, res) {
 		
 	} catch (e) {
 		console.log(e)
-		return res.status(500).json({success: false, message: "Unexpected error occured", error: e})
+		return res.status(500).json({success: false, message: "Unexpected error occured", error: e.message})
 	}
 }
 
