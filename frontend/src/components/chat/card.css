@@ -1,0 +1,13 @@
+.message-card {
+	display: flex;
+	padding: .2em .5em;
+	gap: .5em;
+	background-color: rgba(0, 0, 0, 0.2);
+	width: max-content;
+	font-size: 1em;
+	border-radius: 12px;
+}
+
+.received {
+	align-self: end;
+}

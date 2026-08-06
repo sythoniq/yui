@@ -8,7 +8,6 @@ export default function Avatar({imgUrl, userName}) {
 					: <img className="user-image" src={ProfileSvg} alt="Default profile img" width="10%"/>
 				}
 			</div>
-			<span>{userName}</span>
 		</div>
 	)
 }

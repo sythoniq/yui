@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useParams, useLoaderData } from 'react-router'
-import './Profile.css'
 
 import Load from '../Load.jsx'
 import Error from "../Error.jsx"

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 
 export default function useGetUsers(url) {
-	const [ users, setUsers ] = useState()	
+	const [ users, setUsers ] = useState(null)	
 	const [ isLoading, setIsLoading ] = useState(true)
-	const [ error, setError ] = useState() 
-
+	const [ error, setError ] = useState(undefined) 
+	const [ profile, setProfile ] = useState(null)
+ 
 	useEffect(() => {
 		let active = true
 
@@ -20,7 +21,6 @@ export default function useGetUsers(url) {
 
 				if (!res.ok) {
 					setError("Network error")
-					setUsers(null)
 					setIsLoading(false)
 					return;
 				}
@@ -28,7 +28,6 @@ export default function useGetUsers(url) {
 					if (!data.success) {
 						console.log(data);
 						setError(data.error)
-						setUsers(null)
 						setIsLoading(false)
 						return;
 					}
@@ -50,5 +49,5 @@ export default function useGetUsers(url) {
 		}
 	}, [url])
 
-	return [ users, isLoading, error]
+	return [ users, isLoading, error ]
 }

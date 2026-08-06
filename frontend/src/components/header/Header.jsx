@@ -1,4 +1,4 @@
-import './Header.css'
+import styles from './header.module.css'
 import { Link } from 'react-router'
 import useAuthUser from '../../hooks/useAuthUser.js'
 import Avatar from '../users/Avatar.jsx'
@@ -23,13 +23,12 @@ export default function Header() {
 		)
 	}
 
-
 	return (
-		<header className="page-heading">
+		<header className={styles.heading}>
 			<Link to="/"><h2>Yui</h2></Link>
-			<nav className="page-nav">
+			<nav className={styles.nav}>
 				{loggedIn ? (
-					<Link to={`/profile/${user.user_id}`}>
+					<Link className={styles.image} to={`/profile/${user.user_id}`}>
 						<Avatar imgUrl={userProfile} userName={user.user_name} />
 					</Link>
 				) : (

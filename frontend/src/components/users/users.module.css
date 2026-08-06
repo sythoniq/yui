@@ -1,0 +1,44 @@
+.users {
+	display: flex;
+	flex-direction: column;
+	gap: .6em;
+	overflow: scroll;
+}
+
+.card {
+	display: flex;
+	border-radius: 12px;
+	padding: .4em;
+}
+
+.textStyle {
+	text-overflow: ellipsis;
+}
+
+.card > a {
+	text-decoration: none;
+	color: rgba(0, 0, 0, 0.69);
+}
+
+.card > a > div {
+	height: 3rem;
+}
+
+.card:hover {
+	cursor: pointer;
+	background-color: rgba(0, 0, 0, 0.3);
+	box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.userDetail {
+	display: flex;
+	gap: .5em;
+	align-items: center;
+}
+
+.userDetail > div > div > img {
+	width: 3rem;
+	height: 3rem;
+	object-fit: cover;
+	border-radius: 50%;
+}
