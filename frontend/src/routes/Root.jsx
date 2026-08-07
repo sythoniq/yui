@@ -3,6 +3,7 @@ import Login from '../components/login/Login.jsx'
 import Register from '../components/register/Register.jsx'
 import Chat from '../components/chat/Chat.jsx'
 import UserPage from '../components/users/UserPage.jsx'
+import Users from '../components/users/Users.jsx'
 
 const API = import.meta.env.VITE_BASE_API
 const token = localStorage.getItem("jwt-token") || null;
@@ -29,8 +30,16 @@ const routes = [
 		element: <App />,
 		children: [
 			{
+				index: true,
+				element: <Users />
+			},
+			{
 				path: "/chat/:userId",
 				element: <Chat />,
+			},
+			{
+				path: '/profile/:userId',
+				element: <UserPage />
 			}
 		]
 	},
@@ -42,10 +51,6 @@ const routes = [
 		path: "/register",
 		element: <Register />
 	},
-	{
-		path: '/profile/:userId',
-		element: <UserPage />
-	}
 ]
 
 export default routes

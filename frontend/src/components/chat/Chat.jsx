@@ -4,6 +4,7 @@ import Load from "../Load.jsx"
 import Error from '../Error.jsx'
 import Avatar from '../users/Avatar.jsx'
 import styles from './chat.module.css'
+import Users from '../users/Users.jsx'
 
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
@@ -67,30 +68,33 @@ export default function Chat() {
 	}
 
 	return (
-		<main className={styles.body}>
-			<div className={styles.header}>
-				<Avatar imgUrl={userProfile} />
-				<h3>{recipient.user_name}</h3>
-			</div>
-			<div className={styles.messages}>
-				{messages.map((msg) => {
-					if (msg.sender_id == userId) {
+		<>
+			<Users />
+			<main className={styles.body}>
+				<div className={styles.header}>
+					<Avatar imgUrl={userProfile} />
+					<h3>{recipient.user_name}</h3>
+				</div>
+				<div className={styles.messages}>
+					{messages.map((msg) => {
+						if (msg.sender_id == userId) {
+							return (
+								<Card key={msg.message_id} message={msg} type="received" />
+							)
+						}
 						return (
-							<Card key={msg.message_id} message={msg} type="received" />
+							<Card key={msg.message_id} message={msg} type="sent" />
 						)
-					}
-					return (
-						<Card key={msg.message_id} message={msg} type="sent" />
-					)
-				})}
-				{ isError && <span>{isError}</span> }
-			</div>
-			<form className="send-message">
-				<label htmlFor="messageBody"></label>
-				<input type="text" id="messageBody" name="messageBody" placeholder="Message" onChange={(e) => setMessage(e.target.value)} />
+					})}
+					{ isError && <span>{isError}</span> }
+				</div>
+				<form className={styles.form}>
+					<label htmlFor="messageBody"></label>
+					<input type="text" id="messageBody" name="messageBody" placeholder="Message" onChange={(e) => setMessage(e.target.value)} />
 
-				<button onClick={handleMessage}>Send</button>
-			</form>
-		</main>
+					<button onClick={handleMessage}>Send</button>
+				</form>
+			</main>
+		</>
 	)
 }
