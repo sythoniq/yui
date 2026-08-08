@@ -7,7 +7,6 @@ send direct messages, and manage their profile.
 - User authentication (JWT-based signup/login)
 - One-to-one messaging
 - Profile editing with image upload
-- [anything else that's actually working]
 
 ## Tech Stack
 **Frontend:** React, CSS Modules, React Router
@@ -35,3 +34,8 @@ send direct messages, and manage their profile.
 - No real-time updates yet (WebSockets planned)
 - Form validation still in progress
 - Forced to rerender entire page upon sending a message
+
+
+
+#### Disclaimer
+-- I did use AI to help with what to put in the readme and formatting
