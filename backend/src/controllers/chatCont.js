@@ -38,7 +38,7 @@ async function getChat(req, res) {
 				]
 			},
 			orderBy: {
-				message_date: "asc"
+				message_date: "desc"
 			},
 			include: {
 				sender: {
