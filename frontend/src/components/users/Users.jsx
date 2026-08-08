@@ -30,7 +30,7 @@ export default function Users() {
 					{user.profile_image.length > 0 && (
 						<Avatar imgUrl={user.profile_image[0].image_url} />
 					)}
-					<h2 class={styles.textStyle}>{user.user_name}</h2>
+					<h2 className={styles.textStyle}>{user.user_name}</h2>
 				</div>
 			</Link>
 		</div>	

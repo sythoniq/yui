@@ -73,7 +73,7 @@ export default function Chat() {
 			<main className={styles.body}>
 				<div className={styles.header}>
 					<Avatar imgUrl={userProfile} />
-					<h3>{recipient.user_name}</h3>
+					<h2 style={{textTransform: 'capitalize'}}>{recipient.user_name}</h2>
 				</div>
 				<div className={`message-container ${styles.messages}`}>
 					{messages.map((msg) => {

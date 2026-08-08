@@ -11,6 +11,14 @@
 	align-items: center;
 	padding: .2em 1em;
 	border-bottom: 1px solid black;
+	gap: .5em;
+}
+
+.header > div > div > img {
+	width: 5rem;
+	height: 5rem;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .messages {
