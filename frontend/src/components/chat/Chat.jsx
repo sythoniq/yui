@@ -75,7 +75,7 @@ export default function Chat() {
 					<Avatar imgUrl={userProfile} />
 					<h3>{recipient.user_name}</h3>
 				</div>
-				<div className={styles.messages}>
+				<div className={`message-container ${styles.messages}`}>
 					{messages.map((msg) => {
 						if (msg.sender_id == userId) {
 							return (

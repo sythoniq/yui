@@ -15,7 +15,7 @@
 
 .messages {
 	display: flex;
-	flex-direction: column;
+	flex-direction: column-reverse;
 	gap: 1rem;
 	overflow: scroll;
 	padding: 0 1em;
@@ -38,7 +38,7 @@
 }
 
 .form > input:focus {
-	border: none;
+	outline: none;
 }
 
 .form > button {
@@ -48,4 +48,5 @@
 	padding: .2em .5em;
 	background-color: rgba(0, 0, 0, 0.2);
 	border: none;
+	cursor: pointer;
 }
