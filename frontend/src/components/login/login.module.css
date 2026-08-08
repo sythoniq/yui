@@ -9,6 +9,8 @@
 	background-color: rgba(0, 0, 0, 0.5);
 	border-radius: 12px;
 	color: white;
+	width: max-content;
+	align-self: center;
 }
 
 .loginSect > form {

@@ -36,10 +36,6 @@ const routes = [
 			{
 				path: "/chat/:userId",
 				element: <Chat />,
-			},
-			{
-				path: '/profile/:userId',
-				element: <UserPage />
 			}
 		]
 	},
@@ -51,6 +47,10 @@ const routes = [
 		path: "/register",
 		element: <Register />
 	},
+	{
+		path: '/profile/:userId',
+		element: <UserPage />
+	}
 ]
 
 export default routes
