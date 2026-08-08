@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useParams, useLoaderData } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
+import styles from './page.module.css'
 
 import Load from '../Load.jsx'
 import Error from "../Error.jsx"
@@ -8,11 +9,11 @@ import useGetUser from '../../hooks/useGetUser.js'
 
 export default function UserPage() {
 	const API = import.meta.env.VITE_BASE_API
+	const navigate = useNavigate()
 	const { userId } = useParams()
 	const [ user, loading, error, userProfile ] = useGetUser(`${API}/user/${userId}`)
 	const [ username, setUserName ] = useState(null)
 	const [ password, setPassword ] = useState(null)
-	const [ confirm, setConfirm ] = useState(null)
 
 	if (loading) {
 		return (
@@ -29,16 +30,6 @@ export default function UserPage() {
 	async function handleInfoUpdate(e) {
 		e.preventDefault();
 		try {
-			if (confirm !== password) {
-				const elem = document.querySelectorAll("#password");
-				elem.forEach((el) => {
-					el.style.borderColor = 'rgba(200, 50, 50, 0.6)'
-					// TODO: Need to add a proper advise for when the password is wrong D;
-				})
-
-				return;
-			}
-
 			if (username == null) {
 				setUserName(user.user_name)
 			}
@@ -56,6 +47,13 @@ export default function UserPage() {
 		}	catch(e) {
 			console.log(e)
 		}
+	}
+
+	function handleLogout(e) {
+		e.preventDefault()
+
+		localStorage.removeItem("jwt-token")
+		navigate("/login")
 	}
 
 	async function handleProfileUpdate(e) {
@@ -87,25 +85,30 @@ export default function UserPage() {
 			return;
 		}
 		const prevImg = URL.createObjectURL(e.target.files[0])
-		const elm = document.querySelector(".user-image");
-		elm.src = prevImg;
+		const elems = document.querySelectorAll(".user-image");
+		elems.forEach((el) => {
+			el.src = prevImg
+		})
 	}
 
 	return (
-		<main className="user-profile-page">
-			<div className="page-container">
-				<section className="page-side">
-					<h3 style={{textTransform: 'capitalize'}}>{user.user_name}</h3>
-					<div className="profile-container">
-						<Avatar imgUrl={userProfile} />
-						<input className="edit-profile-image" type="file" name="profile" accept="image/*" onChange={previewNewProfile} />
+		<main className={styles.userPage}>
+			<div className={styles.pageContainer}>
+				<section className={styles.aside}>
+					<h2 style={{textTransform: 'capitalize'}}>{user.user_name}</h2>
+					<div className={styles.profileContainer}>
+						<label htmlFor="file">
+							<Avatar imgUrl={userProfile} />
+						</label>
+						<input className="edit-profile-image" id="file" type="file" name="profile" accept="image/*" onChange={previewNewProfile} hidden />
 					</div>
 					<div className="edit-image">
 						<button onClick={handleProfileUpdate}>Edit Profile</button>
 					</div>
 				</section>
-				<section className="user-details">
-					<h3>Edit Profile</h3>
+				<section className={styles.detContainer}>
+				<section className={styles.userDetails}>
+					<h2>Edit Profile</h2>
 					<form className="user-details-form">
 						<div>
 							<label htmlFor="userName">Username</label>
@@ -115,13 +118,13 @@ export default function UserPage() {
 							<label htmlFor="password">Password</label>
 							<input type="password" id="password" onChange={(e) => setPassword(e.target.value)} required />
 						</div>
-						<div>
-							<label htmlFor="confirm">Confirm Password</label>
-							<input type="password" id="password" onChange={(e) => setConfirm(e.target.value)} required />
-						</div>
-
+					
 						<button onClick={handleInfoUpdate}>Update Info</button>
 					</form>
+				</section>
+				<div className={styles.logoutBtn}>
+					<button onClick={handleLogout}>Logout</button>
+				</div>
 				</section>
 			</div>
 		</main>

@@ -17,8 +17,8 @@ body {
 	align-items: center;
 	min-width: 60rem;
 	min-height: 60rem;
-	max-width: 80rem;
-	max-height: 80rem;
+	max-width: 70rem;
+	max-height: 70rem;
 	gap: 3rem;
 	background-color: rgba(0, 0, 0, 0.5);
 	padding: 1em .5em;
