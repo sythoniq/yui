@@ -16,8 +16,11 @@ send direct messages, and manage their profile.
 **Storage:** Supabase (for profile images)
 
 ## Screenshots
+**Profile Edit Page** 
 ![Alt Text](./assets/ss-1.png?raw=true "Screenshot of app")
+**Chat Page**
 ![Alt Text](./assets/ss-2.png?raw=true "Screenshot of app")
+**Login/Register Page**
 ![Alt Text](./assets/ss-3.png?raw=true "Screenshot of app")
 
 ## Running Locally
