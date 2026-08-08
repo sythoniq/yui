@@ -10,6 +10,7 @@
 	box-shadow: 2px 2px 20px 5px rgba(0, 0, 0, 0.2);
 	background: rgba(0, 0, 0, 0.3);
 	gap: 10rem;
+	align-self: center;
 }
 
 .heading > a, .nav > a {
