@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router'
+import styles from './register.module.css'
 
 export default function Register() {
 	const API = import.meta.env.VITE_BASE_API
@@ -31,16 +32,16 @@ export default function Register() {
 	}
 
 	return (
-		<section className="register-section">
-			<h2>Create an account</h2>
+		<section className={styles.registerSect}>
+			<h2 style={{textDecoration: "underline"}}>Create an account</h2>
 			<form className="register-form">
 				<div>
 					<label htmlFor="username">Username</label>
-					<input type="text" name="username" id="username" onChange={(e) => setUsername(e.target.value)} />
+					<input type="text" name="username" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
 				</div>
 				<div>
 					<label htmlFor="password">Password</label>
-					<input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} />
+					<input type="password" name="password" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
 				</div>
 
 				<button onClick={handleRegister}>Sign Up</button>
@@ -48,5 +49,4 @@ export default function Register() {
 			<p>Already have an account? <Link to="/login">Login</Link></p>
 		</section>
 	)
-
 }

@@ -27,8 +27,10 @@ export default function Users() {
 		<div key={user.user_id} className={styles.card}>
 			<Link to={`/chat/${user.user_id}`}>
 				<div className={styles.userDetail}>
-					{user.profile_image.length > 0 && (
+					{user.profile_image.length > 0 ? (
 						<Avatar imgUrl={user.profile_image[0].image_url} />
+					) : (
+						<Avatar />
 					)}
 					<h2 className={styles.textStyle}>{user.user_name}</h2>
 				</div>

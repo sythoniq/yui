@@ -27,6 +27,8 @@
 	gap: 1rem;
 	overflow: scroll;
 	padding: 0 1em;
+	flex: 1 1 auto;
+	max-height: 35rem;
 }
 
 .form {

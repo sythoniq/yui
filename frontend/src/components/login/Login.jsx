@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router'
+import styles from './login.module.css'
 
 export default function Login() {
 	const API = import.meta.env.VITE_BASE_API
@@ -32,16 +33,16 @@ export default function Login() {
 	}
 
 	return (
-		<section className="login-section">
-			<h2>Sign in to Yui</h2>
+		<section className={styles.loginSect}>
+			<h2 style={{textDecoration: "underline"}}>Sign in to Yui</h2>
 			<form className="login-form">
 				<div>
 					<label htmlFor="username">Username</label>
-					<input type="text" name="username" id="username" onChange={(e) => setUsername(e.target.value)} />
+					<input type="text" name="username" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
 				</div>
 				<div>
 					<label htmlFor="password">Password</label>
-					<input type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} />
+					<input type="password" name="password" placeholder="Password" id="password" onChange={(e) => setPassword(e.target.value)} />
 				</div>
 
 				<button onClick={handleLogin}>Login</button>
