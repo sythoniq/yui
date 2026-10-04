@@ -17,6 +17,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Yui Env
     defaults:
       run:
         working-directory: frontend
@@ -30,7 +31,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VITE_BASE_API: ${{ vars.VITE_BASE_API }}  
+          VITE_BASE_API: ${{ secrets.VITE_BASE_API }}  
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist
