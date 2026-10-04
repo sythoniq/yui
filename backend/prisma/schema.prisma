@@ -1,45 +1,36 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  user_id   Int    @id @default(autoincrement())
-  user_name String @unique
-  user_hash String
-
+  user_id           Int       @id @default(autoincrement())
+  user_name         String    @unique
+  user_hash         String
   received_messages Message[] @relation("MessageReceiver")
   sent_messages     Message[] @relation("MessageSender")
-
-  profile_image Profile[]
+  profile_image     Profile[]
 }
 
 model Message {
   message_id      Int      @id @default(autoincrement())
   message_content String
   message_date    DateTime @default(now())
-
-  sender    User @relation("MessageSender", fields: [sender_id], references: [user_id])
-  sender_id Int
-
-  receiver    User @relation("MessageReceiver", fields: [receiver_id], references: [user_id])
-  receiver_id Int
+  sender_id       Int
+  receiver_id     Int
+  receiver        User     @relation("MessageReceiver", fields: [receiver_id], references: [user_id])
+  sender          User     @relation("MessageSender", fields: [sender_id], references: [user_id])
 }
 
-// Strictly to provide a way to have images as pfps...
 model Profile {
-  image_id  Int    @id @default(autoincrement())
-  image_url String
-
-  user_profile User @relation(fields: [profile_id], references: [user_id])
+  image_id     Int    @id @default(autoincrement())
+  image_url    String
   profile_id   Int
+  user_profile User   @relation(fields: [profile_id], references: [user_id])
 }
